@@ -84,8 +84,8 @@ const router = useRouter();
 
 const register = async () => {
   try {
-    const response = await $axios.post("http://127.0.0.1:8000/api/auth/register", {
-      name: name.value,
+    const response = await $axios.post("auth/register", {
+      first_name: name.value,
       last_name: last_name.value,
       email: email.value,
       password: password.value,

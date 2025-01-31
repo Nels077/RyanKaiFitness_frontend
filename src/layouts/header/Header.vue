@@ -60,17 +60,23 @@
         </svg>
       </div>
       <div class="modalItems w-full flex flex-col items-center">
-        <h2 class="text-creamy_yellow" v-if="cartCounter == 0">Your cart is empty.</h2>
+        <h2 class="text-creamy_yellow" v-if="cartCounter === 0">Your cart is empty.</h2>
 
       </div>
     </div>
 
     <div class="topPart flex items-center justify-between mid:p-2 p-0 gap-1.5">
-      <div class="loginBtn mid:w-4/5 w-full h-10 p-2 flex items-center justify-between bg-creamy_yellow text-black mid:rounded-full rounded-none">
+      <div
+          class="loginBtn mid:w-4/5 w-full h-10 p-2 flex items-center justify-between bg-creamy_yellow text-black mid:rounded-full rounded-none">
         <p class="ml-4 mr-4">10% off online booking! Use the code STRONG</p>
-        <router-link to="/login" class="ml-4 mr-4">Log In</router-link>
+        <p v-if="isAuthenticated" @click="logout" class="ml-4 mr-4 cursor-pointer">
+          Log Out
+        </p>
+        <router-link v-else to="/login" class="ml-4 mr-4">
+          Log In
+        </router-link>
       </div>
-      <router-link :to="'class-schedule'"
+      <router-link :to="'classes'"
                    class="bookBtn w-1/5 h-10 gap-2 p-2 rounded-full lg:flex mid:flex hidden items-center bg-creamy_yellow text-black font-bold cursor-pointer transition-[.3s] hover:bg-[#FF3134]">
         <p class="ml-3">Book a Class</p>
         <svg class="bookArrow transition-[.3s]" data-bbox="19.117 18.918 161.766 162.164" viewBox="0 0 200 200"
@@ -113,7 +119,7 @@
         >
           <g>
             <path fill="rgba(255, 252, 203, 1)"
-                d="M179.5 54v9.517h-159V54h159z"
+                  d="M179.5 54v9.517h-159V54h159z"
             />
             <path
                 fill="rgba(255, 252, 203, 1)"
@@ -131,18 +137,33 @@
 </template>
 
 <script setup>
-import {useRouter} from "vue-router";
-import {useMenuStore} from "@/stores/menuStore.js";
-import HeaderLink from "@/layouts/header/HeaderLink.vue";
-import {useBookStore} from "@/stores/bookStore.js";
-import {scrollToSection} from "@/stores/scrollToSection.js";
 import {ref} from "vue";
+import {useRouter} from "vue-router";
+import HeaderLink from "@/layouts/header/HeaderLink.vue"
+import {useMenuStore} from "@/stores/menuStore.js";
+import {useBookStore} from "@/stores/bookStore.js";
+import {useUserStore} from "@/stores/userStore.js";
+import {scrollToSection} from "@/stores/scrollToSection.js";
+import {$axios} from "@/plugins/axios.js";
 
 const menuStore = useMenuStore();
 const bookStore = useBookStore();
 const cartCounter = ref(0);
-
+const isAuthenticated = ref(!!localStorage.getItem("token"));
 const router = useRouter();
+const useUser = useUserStore()
+
+const logout = async () => {
+  try {
+    await $axios.post("/logout");
+    useUser.logout()
+    isAuthenticated.value = false;
+
+    await router.push("/login");
+  } catch (error) {
+    console.error("Logout failed:", error.response?.data || error.message);
+  }
+};
 </script>
 
 <style scoped>

@@ -1,4 +1,3 @@
-
 export const scrollToSection = (router, route, section) => {
     if (router.currentRoute.value.path === route) {
         const targetSection = document.getElementById(section);

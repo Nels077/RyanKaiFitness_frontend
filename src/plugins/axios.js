@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export const $axios = Axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
+    baseURL: 'http://127.0.0.1:8000/api',
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -9,7 +9,6 @@ export const $axios = Axios.create({
 })
 
 $axios.interceptors.request.use((config) => {
-
     if (localStorage.getItem("token")) {
         config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`
     }

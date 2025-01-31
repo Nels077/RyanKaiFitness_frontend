@@ -67,23 +67,30 @@
 import {ref} from "vue";
 import {$axios} from "@/plugins/axios.js";
 import {useRouter} from "vue-router";
+import {useUserStore} from "@/stores/userStore";
 
 const email = ref("");
 const password = ref("");
-
 const router = useRouter();
+const userStore = useUserStore();
 
 const login = async () => {
   try {
-    const response = await $axios.post("http://127.0.0.1:8000/api/auth/login", {
+    const response = await $axios.post("auth/login", {
       email: email.value,
       password: password.value,
     });
 
-    localStorage.setItem("token", response.data.token);
+    userStore.setUser({
+      id: response.data.user.id,
+      first_name: response.data.user.first_name,
+      last_name: response.data.user.last_name,
+      email: response.data.user.email,
+      token: response.data.token,
+    })
+
     alert("Login successful!");
     await router.push("/");
-
   } catch (error) {
     console.error("Login error:", error.response?.data || error.message);
     alert("Login failed: " + (error.response?.data.message || "Unknown error"));

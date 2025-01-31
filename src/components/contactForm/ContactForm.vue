@@ -50,13 +50,17 @@
 </template>
 
 <script setup>
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import ContactFormInput from "./ContactFormInput.vue";
+import {useUserStore} from "@/stores/userStore.js";
+
+const userStore = useUserStore();
+const user = userStore.user;
 
 const form = reactive({
-  firstname: "",
-  lastname: "",
-  email: "",
+  firstname: user.first_name,
+  lastname: user.last_name,
+  email: user.email,
   subject: "",
   message: "",
 });

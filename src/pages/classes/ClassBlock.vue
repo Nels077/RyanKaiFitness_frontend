@@ -1,8 +1,9 @@
 <template>
-  <article class="w-96 min-h-96 text-creamy_yellow z-99 flex flex-col justify-between border border-creamy_yellow rounded-3xl p-8">
+  <article
+      class="w-96 min-h-96 text-creamy_yellow z-99 flex flex-col justify-between border border-creamy_yellow rounded-3xl p-8">
     <div class="topPart pt-2">
-      <h2 class="flex flex-wrap text-4xl font-bold mb-6">{{ title }}</h2>
-      <p class="pb-4" v-if="subTitle">{{subTitle}}</p>
+      <h2 class="flex flex-wrap min:text-4xl text-3xl font-bold mb-6">{{ title }}</h2>
+      <p class="pb-4" v-if="subTitle">{{ subTitle }}</p>
       <div class="titleUnderline w-full h-px bg-creamy_yellow opacity-15"></div>
       <div class="information mt-6 leading-8">
         <div class="workingDays flex">
@@ -24,6 +25,7 @@ defineProps({
   },
   subTitle: {
     type: String,
+    required: false
   },
   workingDays: {
     type: Array,
@@ -31,18 +33,11 @@ defineProps({
   },
   duration: {
     type: String,
+    required: false
   },
   price: {
     type: Number,
     required: true
   },
 })
-</script>
-
-<style scoped>
-@media (max-width: 500px) {
-  h2 {
-    font-size: 2rem;
-  }
-}
-</style>
+</script> 

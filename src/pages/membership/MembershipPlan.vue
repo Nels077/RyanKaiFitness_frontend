@@ -42,7 +42,7 @@ defineProps({
   },
   benefits: {
     type: Array,
-    required: true,
+    required: true, 
   },
 });
 </script>
